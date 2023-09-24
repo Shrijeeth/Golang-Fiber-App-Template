@@ -21,7 +21,7 @@ A template for building web applications in Golang using the Fiber web framework
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/your-username/Golang-Fiber-App-Template.git
+   git clone https://github.com/Shrijeeth/Golang-Fiber-App-Template.git
    cd Golang-Fiber-App-Template
    ```
    
@@ -31,22 +31,29 @@ A template for building web applications in Golang using the Fiber web framework
 
 3. **Database Setup**:
 
-   If you are using a database, set up the database connection in platform/database.
+   If you are using a database, set up the database connection in environment variables.
 
 4. **Cache Database Setup**:
 
-   If you are using a cache database like redi, set up the database connection in platform/cache.
+   If you are using a cache database like redis, set up the database connection in environment variables.
 
-5. **Run the Application**:
+5. **Application Linter**:
+
+   Run the following command to run the linter
+   ```
+   make lint
+   ```
+
+7. **Run the Application**:
 
    Run the following command to start the server
    ```
    make run
    ```
 
-6. **Access the Application**:
+8. **Access the Application**:
 
-   Your application should now be running locally at http://localhost:3000
+   Your application should now be running locally at specified address in environment variable
 
 ## Configuration
 
@@ -60,4 +67,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Fiber: A fast, Express.js-like web framework for Golang.
 - GORM: The fantastic ORM library for Golang.
+- GolangCi-Lint (https://github.com/golangci/golangci-lint): golangci-lint is a fast Go linters runner.
 - fiber-go-template (https://github.com/create-go-app/fiber-go-template): An amazing repository for fiber-go-template which served us a great inspiration to improve it.

@@ -1,0 +1,15 @@
+**/.DS_Store
+.idea/
+
+# Dev build
+*.exe
+build/
+tmp/
+vendor/
+
+# Test
+*.out
+
+# Environment variables and SSL Certificates
+*.env
+*.pem

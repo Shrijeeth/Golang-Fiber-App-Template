@@ -7,12 +7,20 @@ import (
 )
 
 func getRedisConnectionString() string {
+	var connectionString string
 	user := os.Getenv("REDIS_USER")
 	password := os.Getenv("REDIS_PASSWORD")
 	host := os.Getenv("REDIS_HOST")
 	port := os.Getenv("REDIS_PORT")
+	if (user != "") && (password != "") {
+		connectionString = fmt.Sprintf("redis://%s:%s@%s:%s", user, password, host, port)
+	} else {
+		connectionString = fmt.Sprintf("redis://%s:%s", host, port)
+	}
 	dbNumber := os.Getenv("REDIS_DB_NUMBER")
-	connectionString := fmt.Sprintf("redis://%s:%s@%s:%s/%s", user, password, host, port, dbNumber)
+	if dbNumber != "" {
+		connectionString += fmt.Sprintf("/%s", dbNumber)
+	}
 	return connectionString
 }
 

@@ -3,8 +3,8 @@ package types
 type UserStatus uint64
 
 const (
-	Inactive UserStatus = iota
-	Active
+	InactiveUser UserStatus = iota
+	ActiveUser
 )
 
 type UserRole uint64

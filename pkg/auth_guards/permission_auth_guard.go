@@ -6,8 +6,8 @@ import (
 	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/utils/types"
 	jwtMiddleware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
 	"os"
+	"time"
 )
 
 func PermissionAuthGuard(allowedPermissions []types.UserRole) func(*fiber.Ctx) error {
@@ -16,16 +16,18 @@ func PermissionAuthGuard(allowedPermissions []types.UserRole) func(*fiber.Ctx) e
 		ContextKey:   "jwt",
 		ErrorHandler: middleware.JwtError,
 		SuccessHandler: func(ctx *fiber.Ctx) error {
-			token := ctx.Locals("user").(*jwt.Token)
-			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				if role, found := claims["user_role"].(types.UserRole); found {
-					if len(allowedPermissions) == utils.IntZero {
+			token, err := utils.ExtractTokenMetadata(ctx)
+			now := time.Now().Unix()
+			if now > token.Expires {
+				return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+					"success": false,
+					"error":   "Access Token Expired",
+				})
+			}
+			if err == nil {
+				for _, permission := range allowedPermissions {
+					if token.UserRole == permission {
 						return ctx.Next()
-					}
-					for _, permission := range allowedPermissions {
-						if role == permission {
-							return ctx.Next()
-						}
 					}
 				}
 			}

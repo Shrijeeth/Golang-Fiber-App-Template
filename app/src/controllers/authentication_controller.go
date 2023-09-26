@@ -1,4 +1,4 @@
-package authentication
+package controllers
 
 import (
 	"context"
@@ -19,7 +19,7 @@ func GetAuthenticationServiceInstance() AuthenticationControllerInterface {
 }
 
 func (auth *authentication) SignUp(c *fiber.Ctx) error {
-	request := &SignUpDto{}
+	request := &authenticationService.SignUpDto{}
 	if err := validator.ParseAndValidateRequest(c, request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
@@ -46,7 +46,7 @@ func (auth *authentication) SignUp(c *fiber.Ctx) error {
 func (auth *authentication) SignIn(c *fiber.Ctx) error {
 	ctx := context.Background()
 
-	request := &SignInDto{}
+	request := &authenticationService.SignInDto{}
 	if err := validator.ParseAndValidateRequest(c, request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,

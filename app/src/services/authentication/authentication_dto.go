@@ -1,6 +1,6 @@
 package authentication
 
-import "github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/utils/types"
+import "github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 
 type SignUpDto struct {
 	Email    string         `json:"email" validate:"required,email,lte=255"`

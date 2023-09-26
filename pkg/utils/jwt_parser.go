@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/utils/types"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"

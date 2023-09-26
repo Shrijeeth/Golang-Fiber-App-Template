@@ -1,9 +1,9 @@
 package auth_guards
 
 import (
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/middleware"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/utils"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/utils/types"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/middleware"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	jwtMiddleware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
 	"os"

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/configs"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/routes"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/platform/migrations"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/configs"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/routes"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/platform/migrations"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"log"

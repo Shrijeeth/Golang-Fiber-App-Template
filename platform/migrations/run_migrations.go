@@ -1,8 +1,8 @@
 package migrations
 
 import (
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/app/src/models"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/configs"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/app/src/models"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/configs"
 )
 
 func RunMigrations() {

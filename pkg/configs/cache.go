@@ -2,7 +2,7 @@ package configs
 
 import (
 	"context"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/platform/cache"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/platform/cache"
 	"github.com/redis/go-redis/v9"
 )
 

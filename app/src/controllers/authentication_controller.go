@@ -2,9 +2,14 @@ package controllers
 
 import (
 	"context"
-	authenticationService "github.com/Shrijeeth/Personal-Finance-Tracker-App/app/src/services/authentication"
-	validator "github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg"
+	"encoding/json"
+	authenticationService "github.com/Shrijeeth/Golang-Fiber-App-Template/app/src/services/authentication"
+	validator "github.com/Shrijeeth/Golang-Fiber-App-Template/pkg"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/configs"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	"github.com/gofiber/fiber/v2"
+	"io"
+	"net/http"
 )
 
 type authentication struct{}
@@ -12,6 +17,8 @@ type authentication struct{}
 type AuthenticationControllerInterface interface {
 	SignUp(c *fiber.Ctx) error
 	SignIn(c *fiber.Ctx) error
+	GoogleSignUp(c *fiber.Ctx) error
+	GoogleCallback(c *fiber.Ctx) error
 }
 
 func GetAuthenticationServiceInstance() AuthenticationControllerInterface {
@@ -68,5 +75,71 @@ func (auth *authentication) SignIn(c *fiber.Ctx) error {
 			"access":  tokens.Access,
 			"refresh": tokens.Refresh,
 		},
+	})
+}
+
+func (auth *authentication) GoogleSignUp(c *fiber.Ctx) error {
+	googleConfig := configs.GetGoogleAuthConfig()
+	url := googleConfig.AuthCodeURL("randomstate")
+
+	return c.Redirect(url, fiber.StatusFound)
+}
+
+func (auth *authentication) GoogleCallback(c *fiber.Ctx) error {
+	state := c.Query("state")
+	if state != "randomstate" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"success": false,
+			"error":   "oauth states do not match",
+		})
+	}
+
+	code := c.Query("code")
+	googleConfig := configs.GetGoogleAuthConfig()
+
+	token, err := googleConfig.Exchange(context.Background(), code)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"success": false,
+			"error":   "oauth code token exchange failed",
+		})
+	}
+
+	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"success": false,
+			"error":   "oauth user data fetch failed",
+		})
+	}
+
+	var userData types.GoogleOAuthData
+	userDataResponse, err := io.ReadAll(response.Body)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"success": false,
+			"error":   "oauth user data parse failed",
+		})
+	}
+
+	err = json.Unmarshal(userDataResponse, &userData)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"success": false,
+			"error":   "failed while parsing user data",
+		})
+	}
+
+	err = validator.ValidateRequest(&userData)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"success": false,
+			"error":   "failed while parsing user data",
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"success": true,
+		"data":    userData,
 	})
 }

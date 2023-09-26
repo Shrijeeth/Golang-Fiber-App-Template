@@ -1,14 +1,18 @@
 package routes
 
 import (
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/app/src/controllers"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/app/src/controllers"
 	"github.com/gofiber/fiber/v2"
 )
 
 func RegisterAuthenticateRoute(router fiber.Router) {
-	router = router.Group("/authenticate")
 	authentication := controllers.GetAuthenticationServiceInstance()
 
+	router = router.Group("/authenticate")
 	router.Post("/signup", authentication.SignUp)
 	router.Post("/signin", authentication.SignIn)
+
+	router = router.Group("/google")
+	router.Get("/signup", authentication.GoogleSignUp)
+	router.Get("/redirect", authentication.GoogleCallback)
 }

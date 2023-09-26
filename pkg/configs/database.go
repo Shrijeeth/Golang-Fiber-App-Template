@@ -2,7 +2,7 @@ package configs
 
 import (
 	"errors"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/platform/database"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/platform/database"
 	"gorm.io/gorm"
 	"os"
 )

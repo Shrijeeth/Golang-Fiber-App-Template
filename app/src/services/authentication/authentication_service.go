@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/app/src/models"
-	validator "github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/configs"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/utils"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/utils/types"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/app/src/models"
+	validator "github.com/Shrijeeth/Golang-Fiber-App-Template/pkg"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/configs"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	"gorm.io/gorm"
 	"strconv"
 )
@@ -30,7 +30,7 @@ func AddUser(userDetails *SignUpDto) (*models.User, error) {
 		result := tx.Create(user)
 		if (result.Error != nil) || (result.RowsAffected == utils.IntZero) {
 			tx.Rollback()
-			return errors.New(fmt.Sprintf("error adding user: %s", result.Error))
+			return fmt.Errorf("error adding user: %s", result.Error)
 		}
 
 		user.PasswordHash = ""

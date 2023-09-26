@@ -13,3 +13,8 @@ const (
 	Admin UserRole = iota + 1
 	User
 )
+
+type GoogleOAuthData struct {
+	Email string `json:"email" validate:"required,email,lte=255"`
+	Name  string `json:"name" validate:"required,lte=255"`
+}

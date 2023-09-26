@@ -4,7 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/Shrijeeth/Personal-Finance-Tracker-App/pkg/utils/types"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	"github.com/golang-jwt/jwt/v5"
 	"os"
 	"strconv"

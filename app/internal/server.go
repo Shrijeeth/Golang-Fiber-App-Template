@@ -31,6 +31,13 @@ func main() {
 	}
 	defer configs.CloseRedisClient() //nolint:errcheck
 
+	// Load Cloud Storage Object
+	err = configs.InitCloudObjectStorage()
+	if err != nil {
+		log.Panicf("Error initializing cloud storage object: %s", err)
+	}
+	defer configs.CloseCloseObjectStorage()
+
 	// Run Database Migrations
 	migrations.RunMigrations()
 

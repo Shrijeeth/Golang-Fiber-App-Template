@@ -39,7 +39,10 @@ func main() {
 	defer configs.CloseCloseObjectStorage()
 
 	// Run Database Migrations
-	migrations.RunMigrations()
+	err = migrations.RunMigrations()
+	if err != nil {
+		log.Panicf("Error runnin migrations: %s", err)
+	}
 
 	// Initialize fiber app
 	app := fiber.New()

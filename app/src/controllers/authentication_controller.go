@@ -34,7 +34,14 @@ func (auth *authentication) SignUp(c *fiber.Ctx) error {
 		})
 	}
 
-	addedUser, err := authenticationService.AddUser(request)
+	userData := &types.AddUserData{
+		Email:              request.Email,
+		Password:           request.Password,
+		UserRole:           request.UserRole,
+		AuthenticationType: types.NormalAuthentication,
+	}
+
+	addedUser, err := authenticationService.AddUser(userData)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"success": false,
@@ -61,7 +68,11 @@ func (auth *authentication) SignIn(c *fiber.Ctx) error {
 		})
 	}
 
-	tokens, err := authenticationService.VerifyUser(ctx, request)
+	userData := &types.VerifyUserData{
+		Email:    request.Email,
+		Password: request.Password,
+	}
+	tokens, err := authenticationService.VerifyUser(ctx, userData)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
@@ -113,7 +124,7 @@ func (auth *authentication) GoogleCallback(c *fiber.Ctx) error {
 		})
 	}
 
-	var userData types.GoogleOAuthData
+	var userDetails types.GoogleOAuthData
 	userDataResponse, err := io.ReadAll(response.Body)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -122,7 +133,7 @@ func (auth *authentication) GoogleCallback(c *fiber.Ctx) error {
 		})
 	}
 
-	err = json.Unmarshal(userDataResponse, &userData)
+	err = json.Unmarshal(userDataResponse, &userDetails)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
@@ -130,16 +141,31 @@ func (auth *authentication) GoogleCallback(c *fiber.Ctx) error {
 		})
 	}
 
-	err = validator.ValidateRequest(&userData)
+	err = validator.ValidateRequest(&userDetails)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"error":   "failed while parsing user data",
+		})
+	}
+
+	userData := &types.AddUserData{
+		Email:              userDetails.Email,
+		UserRole:           types.User,
+		AuthenticationType: types.GoogleAuthentication,
+	}
+	addedUser, err := authenticationService.AddUser(userData)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"success": false,
+			"error":   err.Error(),
 		})
 	}
 
 	return c.JSON(fiber.Map{
 		"success": true,
-		"data":    userData,
+		"data": fiber.Map{
+			"user": addedUser,
+		},
 	})
 }

@@ -14,7 +14,26 @@ const (
 	User
 )
 
+type AuthenticationType uint64
+
+const (
+	NormalAuthentication AuthenticationType = iota + 1
+	GoogleAuthentication
+)
+
 type GoogleOAuthData struct {
 	Email string `json:"email" validate:"required,email,lte=255"`
 	Name  string `json:"name" validate:"required,lte=255"`
+}
+
+type AddUserData struct {
+	Email              string
+	Password           string
+	UserRole           UserRole
+	AuthenticationType AuthenticationType
+}
+
+type VerifyUserData struct {
+	Email    string `validate:"required,email,lte=255"`
+	Password string
 }

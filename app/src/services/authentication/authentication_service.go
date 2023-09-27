@@ -13,16 +13,27 @@ import (
 	"strconv"
 )
 
-func AddUser(userDetails *SignUpDto) (*models.User, error) {
+func AddUser(userDetails *types.AddUserData) (*models.User, error) {
 	var user *models.User
 
 	err := configs.DbClient.Transaction(func(tx *gorm.DB) error {
-		user = &models.User{
-			Email:        userDetails.Email,
-			PasswordHash: utils.GeneratePassword(userDetails.Password),
-			UserStatus:   types.ActiveUser,
-			UserRole:     userDetails.UserRole,
+		if (userDetails.Password != "") && (userDetails.AuthenticationType == types.NormalAuthentication) {
+			user = &models.User{
+				Email:              userDetails.Email,
+				PasswordHash:       utils.GeneratePassword(userDetails.Password),
+				UserStatus:         types.ActiveUser,
+				UserRole:           userDetails.UserRole,
+				AuthenticationType: userDetails.AuthenticationType,
+			}
+		} else if (userDetails.Password == "") && (userDetails.AuthenticationType == types.GoogleAuthentication) {
+			user = &models.User{
+				Email:              userDetails.Email,
+				UserStatus:         types.ActiveUser,
+				UserRole:           types.User,
+				AuthenticationType: userDetails.AuthenticationType,
+			}
 		}
+
 		if err := validator.ValidateRequest(user); err != nil {
 			return err
 		}
@@ -50,7 +61,7 @@ func GetUserByEmail(tx *gorm.DB, userEmail string) (*models.User, error) {
 	return user, result.Error
 }
 
-func VerifyUser(ctx context.Context, userDetails *SignInDto) (*utils.Tokens, error) {
+func VerifyUser(ctx context.Context, userDetails *types.VerifyUserData) (*utils.Tokens, error) {
 	var tokens *utils.Tokens
 
 	err := configs.DbClient.Transaction(func(tx *gorm.DB) error {
@@ -61,10 +72,12 @@ func VerifyUser(ctx context.Context, userDetails *SignInDto) (*utils.Tokens, err
 		}
 		userId := strconv.Itoa(int(user.ID))
 
-		isValidUser := utils.ComparePasswords(user.PasswordHash, userDetails.Password)
-		if !isValidUser {
-			tx.Rollback()
-			return errors.New("wrong user email address or password")
+		if user.AuthenticationType == types.NormalAuthentication {
+			isValidUser := utils.ComparePasswords(user.PasswordHash, userDetails.Password)
+			if !isValidUser {
+				tx.Rollback()
+				return errors.New("wrong user email address or password")
+			}
 		}
 
 		tokens, err = utils.GenerateNewTokens(userId, user.Email, user.UserRole, nil)

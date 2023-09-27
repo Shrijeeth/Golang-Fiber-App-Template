@@ -2,9 +2,11 @@ package database
 
 import (
 	"fmt"
+	"os"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"os"
+	"gorm.io/gorm/logger"
 )
 
 func getMySqlConnectionString() string {
@@ -19,6 +21,8 @@ func getMySqlConnectionString() string {
 
 func MySqlConnect() (*gorm.DB, error) {
 	connectionString := getMySqlConnectionString()
-	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Error),
+	})
 	return db, err
 }

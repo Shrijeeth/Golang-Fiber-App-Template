@@ -2,9 +2,11 @@ package database
 
 import (
 	"fmt"
+	"os"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"os"
+	"gorm.io/gorm/logger"
 )
 
 func getPostgresConnectionString() string {
@@ -23,6 +25,8 @@ func getPostgresConnectionString() string {
 
 func PostgresConnect() (*gorm.DB, error) {
 	connectionString := getPostgresConnectionString()
-	db, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Error),
+	})
 	return db, err
 }

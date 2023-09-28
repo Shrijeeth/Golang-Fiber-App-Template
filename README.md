@@ -11,7 +11,7 @@ A template for building web applications in Golang using the Fiber web framework
 - **Database Integration**: Incorporates robust database integration to efficiently handle a variety of SQL databases, ensuring seamless data management capabilities.
 - **Cache Integration**: Incorporates robust cache integration to efficiently handle Redis Cache
 - **Cloud Object Storage Integration**: Incorporates robust cloud object storage integration to efficiently handle a variety of unstructured data, ensuring seamless data management capabilities.
-- **Authentication Middleware**: Basic authentication middleware included.
+- **Authentication**: Basic authentication is included which supports both normal login mechanism and google login mechanism.
 - **Error Handling**: Implements error handling to provide a better user experience.
 - **Logging**: Configured logging to monitor your application effectively.
 - **Testing**: Includes testing setup and example test cases.
@@ -80,4 +80,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Fiber: A fast, Express.js-like web framework for Golang.
 - GORM: The fantastic ORM library for Golang.
 - GolangCi-Lint (https://github.com/golangci/golangci-lint): golangci-lint is a fast Go linters runner.
-- fiber-go-template (https://github.com/create-go-app/fiber-go-template): An amazing repository for fiber-go-template which served us a great inspiration to improve it.
+- fiber-go-template (https://github.com/create-go-app/fiber-go-template): An amazing repository for fiber-go-template which served us a great inspiration to improve it additional functionalities.

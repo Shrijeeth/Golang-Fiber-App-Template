@@ -26,14 +26,14 @@ jobs:
         run: |
           if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -qE '\.go$'; then
             echo "Go files modified or added, continuing with linting."
+            echo "::set-output name=lint_go::true"
           else
             echo "No Go files modified or added, skipping linting."
-            exit 78 # Exit with a neutral status code to skip the job
           fi
 
-      - name: Install golangci-lint
-        run: |
-          GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.1
-
       - name: Run golangci-lint
-        run: golangci-lint run ./...
+        run: |
+          if [[ "${{ steps.check_go_changes.outputs.lint_go }}" == "true" ]]; then
+            GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.1
+            golangci-lint run ./...
+          fi

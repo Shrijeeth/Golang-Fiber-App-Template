@@ -21,11 +21,19 @@ jobs:
         with:
           go-version: 1.19
 
+      - name: Check for Go file changes
+        id: check_go_changes
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -qE '\.go$'; then
+            echo "Go files modified or added, continuing with linting."
+          else
+            echo "No Go files modified or added, skipping linting."
+            exit 78 # Exit with a neutral status code to skip the job
+          fi
+
       - name: Install golangci-lint
         run: |
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.1
-        env:
-          GOBIN: /usr/local/bin
+          GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.1
 
       - name: Run golangci-lint
         run: golangci-lint run ./...

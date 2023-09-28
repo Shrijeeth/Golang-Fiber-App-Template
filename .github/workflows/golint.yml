@@ -24,7 +24,6 @@ jobs:
       - name: Install golangci-lint
         run: |
           go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.1
-          mv ./bin/golangci-lint /usr/local/bin
         env:
           GOBIN: /usr/local/bin
 

@@ -9,6 +9,9 @@ build:
 	go mod vendor
 	go build -o ./out/server ./app/internal/server.go
 
+migrate:
+	go run ./platform/migrations/run_migrations/migrate.go
+
 run:
 	go run ./app/internal/server.go
 

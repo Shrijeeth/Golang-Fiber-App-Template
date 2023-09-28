@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/configs"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/routes"
-	"github.com/Shrijeeth/Golang-Fiber-App-Template/platform/migrations"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"log"
@@ -37,12 +36,6 @@ func main() {
 		log.Panicf("Error initializing cloud storage object: %s", err)
 	}
 	defer configs.CloseCloudObjectStorage() //nolint:errcheck
-
-	// Run Database Migrations
-	err = migrations.RunMigrations()
-	if err != nil {
-		log.Panicf("Error runnin migrations: %s", err)
-	}
 
 	// Initialize fiber app
 	app := fiber.New()

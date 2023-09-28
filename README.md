@@ -8,8 +8,9 @@ A template for building web applications in Golang using the Fiber web framework
 - **Structured Directory Layout**: Follows a well-organized directory structure for your codebase.
 - **Docker Support**: Easily containerize your application for deployment.
 - **Configuration Management**: Manage your application configuration with ease.
-- **Database Integration**: Includes an example of connecting to a PostgreSQL database.
-- **Cache Integration**: Includes an example of connecting to a Redis Instance.
+- **Database Integration**: Incorporates robust database integration to efficiently handle a variety of SQL databases, ensuring seamless data management capabilities.
+- **Cache Integration**: Incorporates robust cache integration to efficiently handle Redis Cache
+- **Cloud Object Storage Integration**: Incorporates robust cloud object storage integration to efficiently handle a variety of unstructured data, ensuring seamless data management capabilities.
 - **Authentication Middleware**: Basic authentication middleware included.
 - **Error Handling**: Implements error handling to provide a better user experience.
 - **Logging**: Configured logging to monitor your application effectively.
@@ -32,10 +33,21 @@ A template for building web applications in Golang using the Fiber web framework
 3. **Database Setup**:
 
    If you are using a database, set up the database connection in environment variables.
+   Below are the currently supported SQL databases:
+      - Postgresql
+      - MySql
 
 4. **Cache Database Setup**:
 
    If you are using a cache database like redis, set up the database connection in environment variables.
+   Below are the currently supported Cache databases:
+      - Redis
+
+5. **Cloud Object Storage Setup**:
+
+   If you are using a cloud object storage, set up the connection in environment variables.
+   Below are the currently supported Cloud Object Storage platforms:
+     - AWS S3
 
 5. **Application Linter**:
 
@@ -57,7 +69,7 @@ A template for building web applications in Golang using the Fiber web framework
 
 ## Configuration
 
-All application configuration can be found in the .env file. Customize it to suit your project's needs.
+All application configuration should be in the .env file. Customize it to suit your project's needs. Use .env.example file as a starting point.
 
 ## License
 

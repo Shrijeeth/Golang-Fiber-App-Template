@@ -21,6 +21,11 @@ jobs:
         with:
           go-version: 1.19
 
+      - name:
+          Debug: List Changed Files
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+
       - name: Check for Go file changes
         id: check_go_changes
         run: |

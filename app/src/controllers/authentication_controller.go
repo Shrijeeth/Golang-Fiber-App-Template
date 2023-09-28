@@ -3,11 +3,13 @@ package controllers
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	authenticationService "github.com/Shrijeeth/Golang-Fiber-App-Template/app/src/services/authentication"
 	validator "github.com/Shrijeeth/Golang-Fiber-App-Template/pkg"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/configs"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 	"io"
 	"net/http"
 )
@@ -52,7 +54,9 @@ func (auth *authentication) SignUp(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"success": true,
 		"data": fiber.Map{
-			"user": addedUser,
+			"user": fiber.Map{
+				"email": addedUser.Email,
+			},
 		},
 	})
 }
@@ -97,6 +101,8 @@ func (auth *authentication) GoogleSignUp(c *fiber.Ctx) error {
 }
 
 func (auth *authentication) GoogleCallback(c *fiber.Ctx) error {
+	ctx := context.Background()
+
 	state := c.Query("state")
 	if state != "randomstate" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -149,14 +155,44 @@ func (auth *authentication) GoogleCallback(c *fiber.Ctx) error {
 		})
 	}
 
-	userData := &types.AddUserData{
-		Email:              userDetails.Email,
-		UserRole:           types.User,
-		AuthenticationType: types.GoogleAuthentication,
-	}
-	addedUser, err := authenticationService.AddUser(userData)
+	existingUser, err := authenticationService.GetUserByEmail(userDetails.Email)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		if errors.Is(err, gorm.ErrRecordNotFound) || existingUser == nil {
+			userData := &types.AddUserData{
+				Email:              userDetails.Email,
+				UserRole:           types.User,
+				AuthenticationType: types.GoogleAuthentication,
+			}
+			addedUser, err := authenticationService.AddUser(userData)
+			if err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"success": false,
+					"error":   err.Error(),
+				})
+			}
+
+			existingUser = addedUser
+		} else {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"success": false,
+				"error":   err.Error(),
+			})
+		}
+	}
+
+	if existingUser.AuthenticationType == types.NormalAuthentication {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"success": false,
+			"error":   "Invalid Authentication Type",
+		})
+	}
+
+	userData := &types.VerifyUserData{
+		Email: existingUser.Email,
+	}
+	tokens, err := authenticationService.VerifyUser(ctx, userData)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"error":   err.Error(),
 		})
@@ -164,8 +200,9 @@ func (auth *authentication) GoogleCallback(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"success": true,
-		"data": fiber.Map{
-			"user": addedUser,
+		"tokens": fiber.Map{
+			"access":  tokens.Access,
+			"refresh": tokens.Refresh,
 		},
 	})
 }

@@ -22,7 +22,7 @@ func getMySqlConnectionString() string {
 func MySqlConnect() (*gorm.DB, error) {
 	connectionString := getMySqlConnectionString()
 	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Error),
+		Logger: logger.Default.LogMode(logger.Silent),
 	})
 	return db, err
 }

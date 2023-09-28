@@ -55,9 +55,9 @@ func AddUser(userDetails *types.AddUserData) (*models.User, error) {
 	return user, nil
 }
 
-func GetUserByEmail(tx *gorm.DB, userEmail string) (*models.User, error) {
+func GetUserByEmail(userEmail string) (*models.User, error) {
 	user := &models.User{}
-	result := tx.Model(user).Where("email = ?", userEmail).First(user)
+	result := configs.DbClient.Model(user).Where("email = ?", userEmail).First(user)
 	return user, result.Error
 }
 
@@ -65,7 +65,7 @@ func VerifyUser(ctx context.Context, userDetails *types.VerifyUserData) (*utils.
 	var tokens *utils.Tokens
 
 	err := configs.DbClient.Transaction(func(tx *gorm.DB) error {
-		user, err := GetUserByEmail(tx, userDetails.Email)
+		user, err := GetUserByEmail(userDetails.Email)
 		if err != nil {
 			tx.Rollback()
 			return err

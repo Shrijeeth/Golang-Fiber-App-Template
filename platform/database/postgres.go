@@ -26,7 +26,7 @@ func getPostgresConnectionString() string {
 func PostgresConnect() (*gorm.DB, error) {
 	connectionString := getPostgresConnectionString()
 	db, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Error),
+		Logger: logger.Default.LogMode(logger.Silent),
 	})
 	return db, err
 }

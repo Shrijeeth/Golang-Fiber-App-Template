@@ -49,7 +49,7 @@ A template for building web applications in Golang using the Fiber web framework
    Below are the currently supported Cloud Object Storage platforms:
      - AWS S3
 
-5. **Application Linter**:
+6. **Application Linter**:
 
    Run the following command to run the linter
    ```

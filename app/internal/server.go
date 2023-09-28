@@ -36,7 +36,7 @@ func main() {
 	if err != nil {
 		log.Panicf("Error initializing cloud storage object: %s", err)
 	}
-	defer configs.CloseCloseObjectStorage() //nolint:errcheck
+	defer configs.CloseCloudObjectStorage() //nolint:errcheck
 
 	// Run Database Migrations
 	err = migrations.RunMigrations()

@@ -23,7 +23,7 @@ func InitCloudObjectStorage() error {
 	return err
 }
 
-func CloseCloseObjectStorage() error {
+func CloseCloudObjectStorage() error {
 	cloudObjectStorageType := os.Getenv("CLOUD_OBJECT_STORAGE_TYPE")
 	var err error
 

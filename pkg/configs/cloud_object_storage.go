@@ -17,6 +17,8 @@ func InitCloudObjectStorage() error {
 	switch cloudObjectStorageType {
 	case "aws_s3":
 		CloudObjectStorage, err = cloud_storage_object.AwsS3Connect()
+	case "gcs":
+		CloudObjectStorage, err = cloud_storage_object.GCSConnect()
 	default:
 		CloudObjectStorage, err = nil, errors.New("Invalid Cloud Object Storage Type")
 	}

@@ -3,6 +3,7 @@ package configs
 import (
 	"errors"
 	"os"
+	"strconv"
 
 	cloud_storage_object "github.com/Shrijeeth/Golang-Fiber-App-Template/platform/cloud_object_storage"
 )
@@ -35,4 +36,9 @@ func CloseCloudObjectStorage() error {
 	}
 
 	return err
+}
+
+func IsCloudStorageObjectRequired() bool {
+	isCloudStorageObjectRequired, _ := strconv.Atoi(os.Getenv("CLOUD_STORAGE_OBJECT_REQUIRED"))
+	return isCloudStorageObjectRequired == 1
 }

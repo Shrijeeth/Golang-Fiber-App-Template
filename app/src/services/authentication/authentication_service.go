@@ -86,10 +86,12 @@ func VerifyUser(ctx context.Context, userDetails *types.VerifyUserData) (*utils.
 			return err
 		}
 
-		err = configs.RedisClient.Set(ctx, userId, tokens.Refresh, 0).Err()
-		if err != nil {
-			tx.Rollback()
-			return err
+		if configs.IsCacheRequired() {
+			err = configs.RedisClient.Set(ctx, userId, tokens.Refresh, 0).Err()
+			if err != nil {
+				tx.Rollback()
+				return err
+			}
 		}
 
 		return nil

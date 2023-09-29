@@ -24,18 +24,24 @@ func main() {
 	defer configs.CloseDb() //nolint:errcheck
 
 	// Load Cache Database
-	err = configs.InitRedisClient()
-	if err != nil {
-		log.Panicf("Error initializing cache: %s", err)
+	isCacheRequired := configs.IsCacheRequired()
+	if isCacheRequired {
+		err = configs.InitRedisClient()
+		if err != nil {
+			log.Panicf("Error initializing cache: %s", err)
+		}
+		defer configs.CloseRedisClient() //nolint:errcheck
 	}
-	defer configs.CloseRedisClient() //nolint:errcheck
 
 	// Load Cloud Storage Object
-	err = configs.InitCloudObjectStorage()
-	if err != nil {
-		log.Panicf("Error initializing cloud storage object: %s", err)
+	isCloudStorageObjectRequired := configs.IsCloudStorageObjectRequired()
+	if isCloudStorageObjectRequired {
+		err = configs.InitCloudObjectStorage()
+		if err != nil {
+			log.Panicf("Error initializing cloud storage object: %s", err)
+		}
+		defer configs.CloseCloudObjectStorage() //nolint:errcheck
 	}
-	defer configs.CloseCloudObjectStorage() //nolint:errcheck
 
 	// Initialize fiber app
 	app := fiber.New()

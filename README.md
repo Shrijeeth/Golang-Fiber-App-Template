@@ -48,6 +48,7 @@ A template for building web applications in Golang using the Fiber web framework
    If you are using a cloud object storage, set up the connection in environment variables.
    Below are the currently supported Cloud Object Storage platforms:
      - AWS S3
+     - GCS
 
 6. **Application Linter**:
 

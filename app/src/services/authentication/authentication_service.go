@@ -45,6 +45,28 @@ func AddUser(userDetails *types.AddUserData) (*models.User, error) {
 		}
 
 		user.PasswordHash = ""
+
+		if configs.IsMailClientRequired() {
+			from := types.MailDetails{
+				Email: "admin@mailersend.net",
+				Name:  "Go-Fiber Template",
+			}
+			to := []types.MailDetails{
+				{
+					Name:  "Shrijeeth S",
+					Email: "shrijeeth427@gmail.com",
+				},
+			}
+			templateVariables := map[string]string{
+				"name": strconv.Itoa(int(user.ID)),
+			}
+			err := configs.MailClient.SendMailWithTemplate("Registration Success", "z86org88mvegew13", from, to, templateVariables)
+			if err != nil {
+				tx.Rollback()
+				return err
+			}
+		}
+
 		return nil
 	})
 

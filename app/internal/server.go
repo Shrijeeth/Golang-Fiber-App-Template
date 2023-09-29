@@ -43,6 +43,16 @@ func main() {
 		defer configs.CloseCloudObjectStorage() //nolint:errcheck
 	}
 
+	// Load Mail Client
+	isMailClientRequired := configs.IsMailClientRequired()
+	if isMailClientRequired {
+		err = configs.InitMailClient()
+		if err != nil {
+			log.Panicf("Error initializing email client: %s", err)
+		}
+		defer configs.CloseMailClient() //nolint:errcheck
+	}
+
 	// Initialize fiber app
 	app := fiber.New()
 

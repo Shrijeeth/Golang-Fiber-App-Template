@@ -11,6 +11,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/google/uuid v1.3.1
 	github.com/joho/godotenv v1.5.1
+	github.com/mailersend/mailersend-go v1.4.0
 	github.com/redis/go-redis/v9 v9.2.0
 	golang.org/x/crypto v0.13.0
 	golang.org/x/oauth2 v0.12.0
@@ -36,6 +37,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.4 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.5 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect

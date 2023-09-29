@@ -11,6 +11,7 @@ A template for building web applications in Golang using the Fiber web framework
 - **Database Integration**: Incorporates robust database integration to efficiently handle a variety of SQL databases, ensuring seamless data management capabilities.
 - **Cache Integration**: Incorporates robust cache integration to efficiently handle Redis Cache
 - **Cloud Object Storage Integration**: Incorporates robust cloud object storage integration to efficiently handle a variety of unstructured data, ensuring seamless data management capabilities.
+- **Mail Client Integration**: Seamlessly incorporate email functionality into your application, allowing you to send notifications, verification emails, and other important messages to your users. This feature enables you to interact with popular email services and APIs for efficient communication with your audience.
 - **Authentication**: Basic authentication is included which supports both normal login mechanism and google login mechanism.
 - **Error Handling**: Implements error handling to provide a better user experience.
 - **Logging**: Configured logging to monitor your application effectively.
@@ -49,6 +50,12 @@ A template for building web applications in Golang using the Fiber web framework
    Below are the currently supported Cloud Object Storage platforms:
      - AWS S3
      - GCS
+
+6. **Email Client Setup**:
+   
+   If you are using a email client, set up the connection in environment variables as mentioned.
+   Below are the currently supported Email Service Providers:
+      - Mailer Send
 
 6. **Application Linter**:
 

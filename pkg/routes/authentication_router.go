@@ -13,6 +13,6 @@ func RegisterAuthenticateRoute(router fiber.Router) {
 	router.Post("/signin", authentication.SignIn)
 
 	router = router.Group("/google")
-	router.Get("/signup", authentication.GoogleSignUp)
+	router.Get("/signin", authentication.GoogleSignIn)
 	router.Get("/redirect", authentication.GoogleCallback)
 }

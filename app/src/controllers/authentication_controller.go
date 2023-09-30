@@ -19,7 +19,7 @@ type authentication struct{}
 type AuthenticationControllerInterface interface {
 	SignUp(c *fiber.Ctx) error
 	SignIn(c *fiber.Ctx) error
-	GoogleSignUp(c *fiber.Ctx) error
+	GoogleSignIn(c *fiber.Ctx) error
 	GoogleCallback(c *fiber.Ctx) error
 }
 
@@ -93,7 +93,7 @@ func (auth *authentication) SignIn(c *fiber.Ctx) error {
 	})
 }
 
-func (auth *authentication) GoogleSignUp(c *fiber.Ctx) error {
+func (auth *authentication) GoogleSignIn(c *fiber.Ctx) error {
 	googleConfig := configs.GetGoogleAuthConfig()
 	url := googleConfig.AuthCodeURL("randomstate")
 

@@ -60,7 +60,7 @@ func AddUser(userDetails *types.AddUserData) (*models.User, error) {
 			templateVariables := map[string]string{
 				"name": strconv.Itoa(int(user.ID)),
 			}
-			err := configs.MailClient.SendMailWithTemplate("Registration Success", "z86org88mvegew13", from, to, templateVariables)
+			err := configs.MailClient.SendMailWithTemplate("Registration Success", "sample-template.html", from, to, templateVariables)
 			if err != nil {
 				tx.Rollback()
 				return err

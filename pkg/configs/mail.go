@@ -21,6 +21,8 @@ func InitMailClient() error {
 	switch mailProvider {
 	case "mailer_send":
 		MailClient, err = mail_provider.NewMailerSendProvider()
+	case "smtp":
+		MailClient, err = mail_provider.NewSMTPMailerProvider()
 	default:
 		MailClient, err = nil, errors.New("Invalid Mail Provider")
 	}

@@ -10,7 +10,7 @@ import (
 
 func ParseHTMLTemplate(templateName string, templateData interface{}) ([]byte, error) {
 	templateNameStr := fmt.Sprint(templateName)
-	templatePath := filepath.Join("./templates/html", templateNameStr)
+	templatePath := filepath.Join("platform/template_engine/templates/html/", templateNameStr)
 
 	templateBytes, err := os.ReadFile(templatePath)
 	if err != nil {

@@ -37,6 +37,7 @@ func (auth *authentication) SignUp(c *fiber.Ctx) error {
 	}
 
 	userData := &types.AddUserData{
+		Username:           request.Username,
 		Email:              request.Email,
 		Password:           request.Password,
 		UserRole:           request.UserRole,
@@ -55,7 +56,8 @@ func (auth *authentication) SignUp(c *fiber.Ctx) error {
 		"success": true,
 		"data": fiber.Map{
 			"user": fiber.Map{
-				"email": addedUser.Email,
+				"username": addedUser.Username,
+				"email":    addedUser.Email,
 			},
 		},
 	})
@@ -159,6 +161,7 @@ func (auth *authentication) GoogleCallback(c *fiber.Ctx) error {
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) || existingUser == nil {
 			userData := &types.AddUserData{
+				Username:           userDetails.Name,
 				Email:              userDetails.Email,
 				UserRole:           types.User,
 				AuthenticationType: types.GoogleAuthentication,

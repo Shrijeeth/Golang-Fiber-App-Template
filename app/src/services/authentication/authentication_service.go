@@ -10,6 +10,7 @@ import (
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	"gorm.io/gorm"
+	"os"
 	"strconv"
 )
 
@@ -19,6 +20,7 @@ func AddUser(userDetails *types.AddUserData) (*models.User, error) {
 	err := configs.DbClient.Transaction(func(tx *gorm.DB) error {
 		if (userDetails.Password != "") && (userDetails.AuthenticationType == types.NormalAuthentication) {
 			user = &models.User{
+				Username:           userDetails.Username,
 				Email:              userDetails.Email,
 				PasswordHash:       utils.GeneratePassword(userDetails.Password),
 				UserStatus:         types.ActiveUser,
@@ -27,6 +29,7 @@ func AddUser(userDetails *types.AddUserData) (*models.User, error) {
 			}
 		} else if (userDetails.Password == "") && (userDetails.AuthenticationType == types.GoogleAuthentication) {
 			user = &models.User{
+				Username:           userDetails.Username,
 				Email:              userDetails.Email,
 				UserStatus:         types.ActiveUser,
 				UserRole:           types.User,
@@ -48,17 +51,17 @@ func AddUser(userDetails *types.AddUserData) (*models.User, error) {
 
 		if configs.IsMailClientRequired() {
 			from := types.MailDetails{
-				Email: "admin@mailersend.net",
+				Email: os.Getenv("SMTP_EMAIL_ID"),
 				Name:  "Go-Fiber Template",
 			}
 			to := []types.MailDetails{
 				{
-					Name:  "Shrijeeth S",
-					Email: "shrijeeth427@gmail.com",
+					Name:  user.Username,
+					Email: user.Email,
 				},
 			}
 			templateVariables := map[string]string{
-				"name": strconv.Itoa(int(user.ID)),
+				"name": user.Username,
 			}
 			err := configs.MailClient.SendMailWithTemplate("Registration Success", "sample-template.html", from, to, templateVariables)
 			if err != nil {

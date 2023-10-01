@@ -27,6 +27,7 @@ type GoogleOAuthData struct {
 }
 
 type AddUserData struct {
+	Username           string
 	Email              string
 	Password           string
 	UserRole           UserRole

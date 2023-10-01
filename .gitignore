@@ -4,6 +4,7 @@
 # Dev build
 *.exe
 build/
+out/
 tmp/
 vendor/
 

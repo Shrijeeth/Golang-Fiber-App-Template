@@ -4,7 +4,7 @@ setup:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.1
 	go install github.com/vektra/mockery/v2@v2.20.0
 
-build:
+build: setup
 	go mod tidy
 	go mod vendor
 	go build -o ./out/server ./app/internal/server.go

@@ -20,11 +20,12 @@ A template for building web applications in Golang using the Fiber web framework
 
 ## Getting Started
 
-1. **Clone the Repository**:
+1. **Clone the Repository and Install Required Libraries**:
 
    ```bash
    git clone https://github.com/Shrijeeth/Golang-Fiber-App-Template.git
    cd Golang-Fiber-App-Template
+   make build
    ```
    
 2. **Environment Variables**:

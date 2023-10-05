@@ -15,7 +15,7 @@ A template for building web applications in Golang using the Fiber web framework
 - **Authentication**: Basic authentication is included which supports both normal login mechanism and google login mechanism.
 - **Error Handling**: Implements error handling to provide a better user experience.
 - **Logging**: Configured logging to monitor your application effectively.
-- **Testing**: Includes testing setup and example test cases.
+- **Testing**: Includes testing setup and example test cases. (TODO)
 - **Middleware Support**: Easily integrate and customize middleware to enhance your application's functionality.
 
 ## Getting Started

@@ -1,13 +1,15 @@
 package auth_guards
 
 import (
+	"os"
+	"strconv"
+	"time"
+
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/middleware"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	jwtMiddleware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
-	"os"
-	"time"
 )
 
 func PermissionAuthGuard(allowedPermissions []types.UserRole) func(*fiber.Ctx) error {
@@ -25,8 +27,22 @@ func PermissionAuthGuard(allowedPermissions []types.UserRole) func(*fiber.Ctx) e
 				})
 			}
 			if err == nil {
+				userID, err := strconv.Atoi(token.UserID)
+				if err != nil {
+					return ctx.Status(fiber.StatusForbidden).JSON(fiber.Map{
+						"success": false,
+						"error":   err.Error(),
+					})
+				}
+
+				if len(allowedPermissions) == utils.IntZero {
+					ctx.Locals("userID", uint(userID))
+					return ctx.Next()
+				}
+
 				for _, permission := range allowedPermissions {
 					if token.UserRole == permission {
+						ctx.Locals("userID", uint(userID))
 						return ctx.Next()
 					}
 				}

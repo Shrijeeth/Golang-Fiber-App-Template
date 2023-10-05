@@ -4,13 +4,12 @@ import (
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 	"os"
 	"strings"
 )
 
 type TokenMetadata struct {
-	UserID            uuid.UUID
+	UserID            string
 	Email             string
 	UserRole          types.UserRole
 	AdditionalDetails map[string]interface{}
@@ -26,10 +25,7 @@ func ExtractTokenMetadata(c *fiber.Ctx) (*TokenMetadata, error) {
 	// Setting and checking token and credentials.
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if ok && token.Valid {
-		userID, err := uuid.Parse(claims["id"].(string))
-		if err != nil {
-			return nil, err
-		}
+		userID := claims["id"].(string)
 
 		// Expires time.
 		expires := int64(claims["expires"].(float64))

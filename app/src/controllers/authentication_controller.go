@@ -29,7 +29,7 @@ func GetAuthenticationServiceInstance() AuthenticationControllerInterface {
 
 func (auth *authentication) SignUp(c *fiber.Ctx) error {
 	request := &authenticationService.SignUpDto{}
-	if err := validator.ParseAndValidateRequest(c, request); err != nil {
+	if err := validator.ParseAndValidateRequest(c, request, types.BodyParserType); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"error":   err.Error(),
@@ -67,7 +67,7 @@ func (auth *authentication) SignIn(c *fiber.Ctx) error {
 	ctx := context.Background()
 
 	request := &authenticationService.SignInDto{}
-	if err := validator.ParseAndValidateRequest(c, request); err != nil {
+	if err := validator.ParseAndValidateRequest(c, request, types.BodyParserType); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"success": false,
 			"error":   err.Error(),

@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
@@ -45,4 +46,19 @@ func ParseAndValidateRequest(c *fiber.Ctx, request interface{}, parserType types
 	}
 
 	return nil
+}
+
+func FormatResponse(response interface{}) (fiber.Map, error) {
+	var responseData fiber.Map
+
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(jsonResponse, &responseData); err != nil {
+		return nil, err
+	}
+
+	return responseData, nil
 }

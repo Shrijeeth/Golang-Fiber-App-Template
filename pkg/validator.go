@@ -48,8 +48,8 @@ func ParseAndValidateRequest(c *fiber.Ctx, request interface{}, parserType types
 	return nil
 }
 
-func FormatResponse(response interface{}) (fiber.Map, error) {
-	var responseData fiber.Map
+func FormatResponse(response interface{}) (interface{}, error) {
+	var responseData interface{}
 
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {

@@ -25,6 +25,12 @@ A template for building web applications in Golang using the Fiber web framework
    ```bash
    git clone https://github.com/Shrijeeth/Golang-Fiber-App-Template.git
    cd Golang-Fiber-App-Template
+   ```
+
+2. **Change Project Name**:
+
+   In go.mod file replace module name to name of your project. Then run the following command:
+   ```bash
    make build
    ```
    

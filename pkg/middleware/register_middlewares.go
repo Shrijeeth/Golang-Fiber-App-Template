@@ -11,12 +11,12 @@ import (
 func RegisterMiddlewares(app *fiber.App) {
 	app.Use(
 		RegisterHelmetMiddleware(helmet.Config{
-			XSSProtection: "1; mode=block",
+			XSSProtection:      "1; mode=block",
 			ContentTypeNosniff: "nosniff",
 		}),
 		RegisterCORSMiddleware([]string{
 			"http://127.0.0.1:3000",
-			}, []string{
+		}, []string{
 			fiber.MethodGet,
 			fiber.MethodPost,
 			fiber.MethodHead,
@@ -27,10 +27,11 @@ func RegisterMiddlewares(app *fiber.App) {
 		logger.New(logger.Config{
 			Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
 		}),
-		RegisterLimiterMiddleware(25, 30 * time.Second),
-		RegisterCacheMiddleware(10 * time.Second, true, 0, []string{
+		RegisterLimiterMiddleware(25, 30*time.Second),
+		RegisterCacheMiddleware(10*time.Second, true, 0, []string{
 			fiber.MethodGet,
 		}),
 		RegisterBlackListingMiddleware("../../blacklist.txt"),
+		RegisterWhiteListingMiddleware("../../whitelist.txt"),
 	)
 }

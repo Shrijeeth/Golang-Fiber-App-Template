@@ -62,6 +62,7 @@ A template for building web applications in Golang using the Fiber web framework
    
    If you are using a email client, set up the connection in environment variables as mentioned.
    Below are the currently supported Email Service Providers:
+      - Custom SMTP Provider along with Template Engine
       - Mailer Send
 
 6. **Application Linter**:

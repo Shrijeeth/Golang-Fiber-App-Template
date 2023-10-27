@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func getRedisConnectionString() string {
+func GetRedisConnectionString() string {
 	var connectionString string
 	user := os.Getenv("REDIS_USER")
 	password := os.Getenv("REDIS_PASSWORD")
@@ -25,7 +25,7 @@ func getRedisConnectionString() string {
 }
 
 func RedisConnect() (*redis.Client, error) {
-	connectionString := getRedisConnectionString()
+	connectionString := GetRedisConnectionString()
 	opt, err := redis.ParseURL(connectionString)
 	if err != nil {
 		return nil, err

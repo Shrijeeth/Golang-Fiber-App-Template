@@ -9,8 +9,9 @@ import (
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/configs"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/utils/types"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/platform/jobs"
+	"github.com/gocraft/work"
 	"gorm.io/gorm"
-	"os"
 	"strconv"
 )
 
@@ -49,25 +50,12 @@ func AddUser(userDetails *types.AddUserData) (*models.User, error) {
 
 		user.PasswordHash = ""
 
-		if configs.IsMailClientRequired() {
-			from := types.MailDetails{
-				Email: os.Getenv("SMTP_EMAIL_ID"),
-				Name:  "Go-Fiber Template",
-			}
-			to := []types.MailDetails{
-				{
-					Name:  user.Username,
-					Email: user.Email,
-				},
-			}
-			templateVariables := map[string]string{
-				"name": user.Username,
-			}
-			err := configs.MailClient.SendMailWithTemplate("Registration Success", "sample-template.html", from, to, templateVariables)
-			if err != nil {
-				tx.Rollback()
-				return err
-			}
+		_, err := jobs.JobEnqueuer.Enqueue(jobs.SampleMailJobName, work.Q{
+			"username": user.Username,
+			"email":    user.Email,
+		})
+		if err != nil {
+			return fmt.Errorf("error executing email job: %s", err)
 		}
 
 		return nil

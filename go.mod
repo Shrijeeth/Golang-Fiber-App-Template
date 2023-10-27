@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/storage v1.33.0
 	github.com/aws/aws-sdk-go v1.45.17
 	github.com/go-playground/validator/v10 v10.15.4
+	github.com/gocraft/work v0.5.1
 	github.com/gofiber/contrib/jwt v1.0.7
 	github.com/gofiber/fiber/v2 v2.50.0
 	github.com/golang-jwt/jwt/v5 v5.0.0
@@ -36,6 +37,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/gomodule/redigo v1.8.9 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.4 // indirect
@@ -55,6 +57,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/robfig/cron v1.2.0 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.50.0 // indirect

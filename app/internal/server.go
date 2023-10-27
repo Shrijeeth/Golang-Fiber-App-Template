@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/configs"
 	"github.com/Shrijeeth/Golang-Fiber-App-Template/pkg/routes"
+	"github.com/Shrijeeth/Golang-Fiber-App-Template/platform/jobs"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"log"
@@ -51,6 +52,15 @@ func main() {
 			log.Panicf("Error initializing email client: %s", err)
 		}
 		defer configs.CloseMailClient() //nolint:errcheck
+	}
+
+	isJobWorkerRequired := jobs.IsJobWorkerRequired()
+	if isJobWorkerRequired {
+		err := jobs.InitWorkerPool()
+		if err != nil {
+			log.Panicf("Error initializing job worker: %s", err)
+		}
+		defer jobs.CloseWorkerPool() //nolint:errcheck
 	}
 
 	// Initialize fiber app

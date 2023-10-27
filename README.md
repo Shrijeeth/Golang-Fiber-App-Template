@@ -17,6 +17,7 @@ A template for building web applications in Golang using the Fiber web framework
 - **Logging**: Configured logging to monitor your application effectively.
 - **Testing**: Includes testing setup and example test cases. (TODO)
 - **Middleware Support**: Easily integrate and customize middleware to enhance your application's functionality.
+- **Background Job Support**: Background jobs are tasks that are processed asynchronously, typically for long-running or resource-intensive operations. In this context, it mentions the use of the gokraft/work library, which is a Go library for managing background jobs.
 
 ## Getting Started
 

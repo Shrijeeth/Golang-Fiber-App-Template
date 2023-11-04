@@ -94,8 +94,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Fiber: A fast, Express.js-like web framework for Golang.
-- GORM: The fantastic ORM library for Golang.
-- GolangCi-Lint (https://github.com/golangci/golangci-lint): golangci-lint is a fast Go linters runner.
-- fiber-go-template (https://github.com/create-go-app/fiber-go-template): An amazing repository for fiber-go-template which served us a great inspiration to improve it additional functionalities.
-- GoCraft Work (https://github.com/gocraft/work): An excellent repository for processing background jobs in Go
+- Fiber (<https://gofiber.io>): A fast, Express.js-like web framework for Golang.
+- GORM (<https://gorm.io>): The fantastic ORM library for Golang.
+- GolangCi-Lint (<https://github.com/golangci/golangci-lint>): golangci-lint is a fast Go linters runner.
+- fiber-go-template (<https://github.com/create-go-app/fiber-go-template>): An amazing repository for fiber-go-template which served us a great inspiration to improve it additional functionalities.
+- GoCraft Work (<https://github.com/gocraft/work>): An excellent repository for processing background jobs in Go

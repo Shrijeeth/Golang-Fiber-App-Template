@@ -15,11 +15,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Create coverage directory
-              run: mkdir -p coverage
-
             - name: Checkout code
               uses: actions/checkout@v2
+
+            - name: Create coverage directory
+              run: mkdir -p coverage
 
             - name: Set up Go
               uses: actions/setup-go@v2

@@ -14,9 +14,40 @@ jobs:
     test:
         runs-on: ubuntu-latest
 
+        services:
+            mysql:
+              image: mysql:latest
+              env:
+                MYSQL_ROOT_PASSWORD: password
+                MYSQL_DATABASE: testing_db
+                MYSQL_USER: root
+                MYSQL_PASSWORD: password
+              ports:
+                - 3306:3306
+              options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+        env:
+            MYSQL_TEST_DB_HOST: 127.0.0.1
+            MYSQL_TEST_DB_USER: root
+            MYSQL_TEST_DB_PASSWORD: password
+            MYSQL_TEST_DB_PORT: 3306
+            MYSQL_TEST_DB_NAME: testing_db
+            DB_TYPE: mysql
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
+
+            - name: Wait for MySQL to start
+              run: |
+                echo "Waiting for MySQL to start..."
+                until mysql -h127.0.0.1 -uroot -ppassword -e 'SHOW DATABASES'; do
+                  sleep 1
+                done
+
+            - name: Set up database
+              run: |
+                mysql -h127.0.0.1 -uroot -ppassword -e 'CREATE DATABASE testing_db;'
 
             - name: Create coverage directory
               run: mkdir -p coverage
@@ -25,6 +56,15 @@ jobs:
               uses: actions/setup-go@v2
               with:
                 go-version: 1.19
+
+            - name: Set up environment variables
+              run: |
+                export MYSQL_TEST_DB_HOST=$MYSQL_TEST_DB_HOST
+                export MYSQL_TEST_DB_USER=$MYSQL_TEST_DB_USER
+                export MYSQL_TEST_DB_PASSWORD=$MYSQL_TEST_DB_PASSWORD
+                export MYSQL_TEST_DB_PORT=$MYSQL_TEST_DB_PORT
+                export MYSQL_TEST_DB_NAME=$MYSQL_TEST_DB_NAME
+                export DB_TYPE=$DB_TYPE
 
             - name: Run tests
               run: |

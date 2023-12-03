@@ -73,14 +73,26 @@ A template for building web applications in Golang using the Fiber web framework
    make lint
    ```
 
-7. **Run the Application**:
+7. **Application Unit testing**:
+
+   Run the following command to run the test suites for your application. Test related files will be stored under coverage folder
+   ```
+   make test
+   ```
+
+   To run tests along with coverage report run the following command
+   ```
+   make test.report
+   ```
+
+8. **Run the Application**:
 
    Run the following command to start the server
    ```
    make run
    ```
 
-8. **Access the Application**:
+9. **Access the Application**:
 
    Your application should now be running locally at specified address in environment variable
 

@@ -11,7 +11,7 @@ on:
 permissions: read-all
 
 jobs:
-    go-test-report:
+    test:
         runs-on: ubuntu-latest
 
         steps:
@@ -23,10 +23,33 @@ jobs:
               with:
                 go-version: 1.19
 
-            - name: Test the application
-              uses: brian-pickens/go-test-report@v1
+            - name: Run tests
+              run: |
+                go get -v -t -d ./...
+                go test -race ./app/src/tests/... -count=1 -p 1 -covermode=atomic -coverprofile=coverage/coverage.out
+
+    coverage:
+        runs-on: ubuntu-latest
+        needs: test
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Go
+              uses: actions/setup-go@v2
               with:
-                packages: "./..."
-                reports-only: "false"
-                summary: "true"
-                GO111MODULE: "auto"
+                go-version: 1.19
+
+            - name: Install gocov and gocover-cobertura
+              run: |
+                go install github.com/axw/gocov/gocov@latest
+                go install github.com/t-yuki/gocover-cobertura@latest
+
+            - name: Convert coverage
+              run: gocov convert coverage/coverage.out | gocov report 2>&1
+
+            - name: Generate coverage report
+              run: |
+                go tool cover -html coverage/coverage.out -o coverage/coverage.html
+                gocover-cobertura < coverage/coverage.out > coverage/coverage.xml

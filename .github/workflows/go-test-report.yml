@@ -44,10 +44,6 @@ jobs:
                   sleep 1
                 done
 
-            - name: Set up database
-              run: |
-                mysql -h127.0.0.1 -uroot -ppassword -e 'CREATE DATABASE testing_db;'
-
             - name: Create coverage directory
               run: mkdir -p coverage
 

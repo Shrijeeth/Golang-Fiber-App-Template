@@ -15,6 +15,9 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - name: Create coverage directory
+              run: mkdir -p coverage
+
             - name: Checkout code
               uses: actions/checkout@v2
 

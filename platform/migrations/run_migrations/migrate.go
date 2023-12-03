@@ -15,7 +15,7 @@ func main() {
 	}
 
 	// Load Database
-	err = configs.InitDb()
+	err = configs.InitDb(false)
 	if err != nil {
 		log.Panicf("Error initializing database: %s", err)
 	}

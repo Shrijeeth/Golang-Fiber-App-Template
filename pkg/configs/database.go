@@ -9,15 +9,15 @@ import (
 
 var DbClient *gorm.DB
 
-func InitDb() error {
+func InitDb(isTest bool) error {
 	dbType := os.Getenv("DB_TYPE")
 	var err error
 
 	switch dbType {
 	case "postgres":
-		DbClient, err = database.PostgresConnect()
+		DbClient, err = database.PostgresConnect(isTest)
 	case "mysql":
-		DbClient, err = database.MySqlConnect()
+		DbClient, err = database.MySqlConnect(isTest)
 	default:
 		DbClient, err = nil, errors.New("Invalid DB Type")
 	}

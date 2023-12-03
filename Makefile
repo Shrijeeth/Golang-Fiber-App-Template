@@ -1,3 +1,13 @@
+ifeq ($(OS),Windows_NT)
+    # Windows
+    RM := del /s /q
+    MKDIR := mkdir
+else
+    # Linux/Unix
+    RM := rm -rf
+    MKDIR := mkdir -p
+endif
+
 setup:
 	go install github.com/axw/gocov/gocov@latest
 	go install github.com/t-yuki/gocover-cobertura@latest
@@ -17,3 +27,15 @@ run:
 
 lint:
 	golangci-lint run
+
+test:
+	$(RM) coverage
+	$(MKDIR) coverage
+	go test -race ./app/src/tests/... -count=1 -p 1 -covermode=atomic -coverprofile=coverage/coverage.out
+
+test.cover: test
+	gocov convert coverage/coverage.out | gocov report 2>&1
+
+test.report: test.cover
+	go tool cover -html coverage/coverage.out -o coverage/coverage.html
+	gocover-cobertura < coverage/coverage.out > coverage/coverage.xml

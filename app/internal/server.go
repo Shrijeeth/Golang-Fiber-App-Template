@@ -18,7 +18,7 @@ func main() {
 	}
 
 	// Load Database
-	err = configs.InitDb()
+	err = configs.InitDb(false)
 	if err != nil {
 		log.Panicf("Error initializing database: %s", err)
 	}
@@ -54,6 +54,7 @@ func main() {
 		defer configs.CloseMailClient() //nolint:errcheck
 	}
 
+	// Load Job Worker
 	isJobWorkerRequired := jobs.IsJobWorkerRequired()
 	if isJobWorkerRequired {
 		err := jobs.InitWorkerPool()

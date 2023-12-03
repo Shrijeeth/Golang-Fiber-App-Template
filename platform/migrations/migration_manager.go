@@ -71,3 +71,32 @@ func RunMigrations() error {
 	fmt.Println("All migrations completed successfully")
 	return nil
 }
+
+func RollbackMigrations() error {
+    mu.RLock()
+    defer mu.RUnlock()
+    var err error
+
+    var sortedNames []string
+    for name := range migrationMap {
+        sortedNames = append(sortedNames, name)
+    }
+    sort.Sort(sort.Reverse(sort.StringSlice(sortedNames)))
+
+    for _, name := range sortedNames {
+        migration := GetMigration(name)
+        if migration.MigrationType == MigrationDown {
+            err = migration.Up(configs.DbClient)
+        } else if migration.MigrationType == MigrationUp {
+            err = migration.Down(configs.DbClient)
+        }
+
+        if err != nil {
+            return err
+        }
+        fmt.Printf("Rollback of Migration %s completed successfully\n", migration.Name)
+    }
+
+    fmt.Println("All migrations rolled back successfully")
+    return nil
+}

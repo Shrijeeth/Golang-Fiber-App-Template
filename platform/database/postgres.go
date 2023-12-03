@@ -9,13 +9,25 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func getPostgresConnectionString() string {
-	host := os.Getenv("POSTGRES_DB_HOST")
-	user := os.Getenv("POSTGRES_DB_USER")
-	password := os.Getenv("POSTGRES_DB_PASSWORD")
-	port := os.Getenv("POSTGRES_DB_PORT")
-	dbName := os.Getenv("POSTGRES_DB_NAME")
-	sslMode := os.Getenv("POSTGRES_DB_SSL_MODE")
+func getPostgresConnectionString(isTest bool) string {
+	var host, user, password, port, dbName, sslMode string
+
+	if isTest {
+		host = os.Getenv("POSTGRES_TEST_DB_HOST")
+		user = os.Getenv("POSTGRES_TEST_DB_USER")
+		password = os.Getenv("POSTGRES_TEST_DB_PASSWORD")
+		port = os.Getenv("POSTGRES_TEST_DB_PORT")
+		dbName = os.Getenv("POSTGRES_TEST_DB_NAME")
+		sslMode = os.Getenv("POSTGRES_TEST_DB_SSL_MODE")
+	} else {
+		host = os.Getenv("POSTGRES_DB_HOST")
+		user = os.Getenv("POSTGRES_DB_USER")
+		password = os.Getenv("POSTGRES_DB_PASSWORD")
+		port = os.Getenv("POSTGRES_DB_PORT")
+		dbName = os.Getenv("POSTGRES_DB_NAME")
+		sslMode = os.Getenv("POSTGRES_DB_SSL_MODE")
+	}
+	
 	if sslMode != "disable" {
 		sslMode += " sslrootcert=" + os.Getenv("POSTGRES_DB_SSL_CERTIFICATE")
 	}
@@ -23,8 +35,8 @@ func getPostgresConnectionString() string {
 	return connectionString
 }
 
-func PostgresConnect() (*gorm.DB, error) {
-	connectionString := getPostgresConnectionString()
+func PostgresConnect(isTest bool) (*gorm.DB, error) {
+	connectionString := getPostgresConnectionString(isTest)
 	db, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 	})

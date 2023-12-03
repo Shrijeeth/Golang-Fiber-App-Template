@@ -17,7 +17,7 @@ func TestAuthenticationService(t *testing.T) {
 }
 
 var _ = BeforeEach(func() {
-	err := godotenv.Load("/workspaces/Golang-Fiber-App-Template/.env")
+	err := godotenv.Load("../../../../../.env.example")
 	if err != nil {
 		log.Panicf("Error loading .env file: %s", err)
 	}

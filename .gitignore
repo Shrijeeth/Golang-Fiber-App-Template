@@ -9,6 +9,7 @@ tmp/
 vendor/
 
 # Test
+coverage/
 *.out
 
 # Environment variables and SSL Certificates

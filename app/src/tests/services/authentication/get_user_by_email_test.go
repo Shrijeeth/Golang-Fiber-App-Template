@@ -43,4 +43,14 @@ var _ = Describe("Authentication Service", func() {
 			Expect(user.AuthenticationType).To(Equal(types.NormalAuthentication))
 		})
 	})
+
+	Context("Get User By Email - Failure Case", func() {
+		It("User not found for given email id", func ()  {
+			user, err := authentication.GetUserByEmail("test@gmail.com")
+
+			Expect(err).To(Not(BeNil()))
+			Expect(err.Error()).To(Equal("record not found"))
+			Expect(user).To(Equal(&models.User{}))
+		})
+	})
 })

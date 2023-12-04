@@ -9,12 +9,10 @@ import (
 	"time"
 )
 
-type WorkerContext struct{}
-
 var (
 	WorkerPool   *work.WorkerPool
 	RedisJobPool *redis.Pool
-	JobEnqueuer  *work.Enqueuer
+	JobEnqueuer  JobEnqueuerInterface
 )
 
 func InitWorkerPool() error {
